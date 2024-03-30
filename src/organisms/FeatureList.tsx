@@ -1,4 +1,11 @@
-import { StyleSheet, View, Text, FlatList, ScrollView } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  ScrollView,
+  Button,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   checkIfDatabaseExists,
@@ -87,11 +94,14 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       <View style={styles.column}>
         <Text style={styles.rowId}>{item.station_name}</Text>
       </View>
+      <View style={styles.column}>
+        <Button title="下車" onPress={() => alert('おりました')} />
+      </View>
     </View>
   );
   return (
-    <View style={{ height: 600 }}>
-      <Text>{code}件</Text>
+    <View style={{ height: 550 }}>
+      <Text style={{ fontSize: 22 }}>{code}件</Text>
       {sharedState.length !== 0 ? (
         <FlatList
           data={sharedState}
@@ -111,11 +121,15 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
 const styles = StyleSheet.create({
   rowItem: {
     flexDirection: 'row',
-    backgroundColor: '#fff',
+    backgroundColor: '#cde',
     borderBottomWidth: 1,
-    borderBottomColor: 'black',
+    borderBottomColor: '#dcdcdc',
+    marginTop: 3,
+    height: 49,
   },
   column: {
+    paddingTop: 8,
+    paddingRight: 4,
     flex: 1,
   },
   rowId: {
