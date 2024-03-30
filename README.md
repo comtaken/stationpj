@@ -1,3 +1,7 @@
+
+![image](https://github.com/comtaken/stationpj/assets/65578523/f841ab2c-44ca-49af-b1f3-0e0a742294ae)
+
+
 ### 起動手順  
 1. 以下コマンドで起動  
     > $ npx expo start
