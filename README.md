@@ -9,9 +9,10 @@
             "name": "station17",  
     ```  
 
-2. 以下コマンドでbuild
+1. 以下コマンドでbuild
     > $ eas build -p android  
-  
+1. prettier  
+    > $ npm run prettier  
 
 ### モジュールバージョン違いの対応  
 npx expo start時、モジュールのバージョン違いで警告など表示は個別でモジュールのインストールが必要。  

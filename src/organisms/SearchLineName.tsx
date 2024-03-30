@@ -74,7 +74,7 @@ const pickerSelectStyles = StyleSheet.create({
     borderColor: '#789',
     borderRadius: 8,
     color: 'black',
-    paddingRight: 30, 
+    paddingRight: 30,
     backgroundColor: '#eee',
   },
 });

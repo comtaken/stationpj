@@ -14,11 +14,18 @@ import { useContext } from 'react';
 import React from 'react';
 
 interface Props {
-  sharedState: [];
+  sharedState: ArrayLike<{
+    line_cd: number;
+    line_name: string;
+    station_cd: number;
+    station_name: string;
+  }>;
 }
 const FeatureList: React.FC<Props> = ({ sharedState }) => {
+  const testnum = '';
+  const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
-  const [code, setCode] = useState<string>(sharedState.length.toString());
+  const [code, setCode] = useState<string>();
   useEffect(() => {
     checkIfDatabaseExists()
       .then((result) => {
@@ -41,11 +48,20 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
 
     selectcount()
       .then((result) => {
+        setGetAllNum(result);
       })
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
   }, []);
+
+  useEffect(() => {
+    if (sharedState.length === 0) {
+      setCode(getAllNum);
+    } else {
+      setCode(sharedState.length.toString());
+    }
+  }, [sharedState]);
 
   const renderItem = ({
     item,
@@ -75,7 +91,7 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
   );
   return (
     <View style={{ height: 600 }}>
-      <Text>{code}</Text>
+      <Text>{code}件</Text>
       {sharedState.length !== 0 ? (
         <FlatList
           data={sharedState}

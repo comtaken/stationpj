@@ -50,7 +50,7 @@ export function selectcount() {
         [],
         (_, resultSet) => {
           var result = resultSet.rows._array[0]['count(*)'];
-          console.log('count successデータ件数：' + result + '件');
+          // console.log('count successデータ件数：' + result + '件');
           resolve(result);
           return true;
         },
