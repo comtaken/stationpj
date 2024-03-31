@@ -6,6 +6,7 @@ import SearchLineName from '../organisms/SearchLineName';
 const PageTemplate = ({}) => {
   const [sharedState, setSharedState] = useState<any>([]);
   const handleChange = (newValue: any) => {
+    // console.log(newValue)
     setSharedState(newValue);
   };
   return (

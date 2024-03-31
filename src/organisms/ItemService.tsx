@@ -1,6 +1,7 @@
 import * as SQLite from 'expo-sqlite';
+import { Alert } from 'react-native';
 const db = SQLite.openDatabase('db');
-
+let messageFlg: number;
 /**
  * テーブル存在チェック
  * @returns true：DB存在確認あり false：DB存在確認なし
@@ -40,7 +41,7 @@ export const checkIfDatabaseExists = () => {
   });
 };
 /**
- * 全件取得する
+ * 件数取得する
  */
 export function selectcount() {
   return new Promise<string>((resolve, reject) => {
@@ -62,6 +63,63 @@ export function selectcount() {
     });
   });
 }
+
+export const updateGetOffFlg = (station_cd: number, station_name: string) => {
+  return new Promise(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `update station_table set get_off_flg=1 where station_cd=?;`,
+        [station_cd],
+        (_, result) => {
+          // alert("更新しました。");
+          // console.log(result);
+          messageFlg = 1;
+          onPressAlert(station_name, messageFlg);
+          console.log('update success');
+        },
+        () => {
+          console.log('update faild');
+          return false;
+        },
+      );
+    });
+  });
+};
+
+export const updateCancelFlg = (station_cd: number, station_name: string) => {
+  return new Promise(() => {
+    db.transaction((tx) => {
+      tx.executeSql(
+        `update station_table set get_off_flg=0 where station_cd=?;`,
+        [station_cd],
+        (_, result) => {
+          messageFlg = 0;
+          onPressAlert(station_name, messageFlg);
+          console.log('cancel success');
+        },
+        () => {
+          console.log('cancel faild');
+          return false;
+        },
+      );
+    });
+  });
+};
+
+const onPressAlert = (station_name: string, messageFlg: number) => {
+  //   Alert.alert(station_name, '下車更新しました。', [
+  //   { text: 'OK', onPress: () => '' },
+  // ]);
+  if (messageFlg === 1) {
+    Alert.alert(station_name, '下車更新しました。', [
+      { text: 'OK', onPress: () => '' },
+    ]);
+  } else {
+    Alert.alert(station_name, '取消更新しました。', [
+      { text: 'OK', onPress: () => '' },
+    ]);
+  }
+};
 
 /**
  * コンボボックス用路線名を取得する
@@ -128,24 +186,6 @@ export const getItemsFromDatabase = () => {
     });
   });
 };
-
-// export const createItemsFromDatabase = () => {
-//     return new Promise(() => {
-//         db.transaction(tx => {
-//             tx.executeSql(
-//                 `create table if not exists station_table (line_cd integer not null, line_name text, station_cd integer not null, station_name text not null);`,
-//                 [],
-//                 () => {
-//                     console.log("create table success");
-//                 },
-//                 () => {
-// 				console.log("create faild");
-// 				return false;
-// 			}
-//             );
-//         });
-//     });
-// };
 
 export const createItemsFromDatabase = () => {
   return new Promise(() => {

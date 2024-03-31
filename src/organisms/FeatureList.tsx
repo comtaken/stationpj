@@ -14,11 +14,15 @@ import {
   getItemsFromDatabase,
   insertItemsFromDatabase,
   selectcount,
+  updateCancelFlg,
+  updateGetOffFlg,
 } from './ItemService';
 import * as FileSystem from 'expo-file-system';
 import tw from 'twrnc';
 import { useContext } from 'react';
 import React from 'react';
+import { Colors } from 'react-native/Libraries/NewAppScreen';
+import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
   sharedState: ArrayLike<{
@@ -26,13 +30,16 @@ interface Props {
     line_name: string;
     station_cd: number;
     station_name: string;
+    get_off_flg: number;
   }>;
 }
 const FeatureList: React.FC<Props> = ({ sharedState }) => {
   // console.log("FileSystem; " + FileSystem.documentDirectory);
+  // console.log(sharedState);
   const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
   const [code, setCode] = useState<string>();
+
   useEffect(() => {
     /**
      * テーブル削除
@@ -81,6 +88,39 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       setCode(sharedState.length.toString());
     }
   }, [sharedState]);
+  /**
+   * 下車ボタン押下
+   * @param station_cd
+   */
+  const getOffPress = (station_cd: number, station_name: string) => {
+    // console.log(station_cd);
+    updateGetOffFlg(station_cd, station_name);
+
+    getItemsFromDatabase()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error('Error fetching items:', error);
+      });
+  };
+
+  /**
+   * 取消ボタン押下
+   * @param station_cd
+   */
+  const cancelPress = (station_cd: number, station_name: string) => {
+    // console.log(station_cd);
+    updateCancelFlg(station_cd, station_name);
+
+    getItemsFromDatabase()
+      .then((items) => {
+        setItems(items);
+      })
+      .catch((error) => {
+        console.error('Error fetching items:', error);
+      });
+  };
 
   const renderItem = ({
     item,
@@ -91,6 +131,7 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       line_name: string;
       station_cd: number;
       station_name: string;
+      get_off_flg: number;
     };
     index: number;
   }) => (
@@ -106,8 +147,24 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       <View style={styles.column}>
         <Text style={styles.rowId}>{item.station_name}</Text>
       </View>
-      <View style={styles.column}>
-        <Button title="下車" onPress={() => alert('おりました')} />
+      <View>
+        {item.get_off_flg == 1 ? (
+          <Ionicons name="checkmark-circle" size={32} color="green" />
+        ) : (
+          <Ionicons name="close-circle" size={32} color="red" />
+        )}
+      </View>
+      <View style={styles.onPressbtn}>
+        <Button
+          title="下車"
+          onPress={() => getOffPress(item.station_cd, item.station_name)}
+        />
+      </View>
+      <View style={styles.cancelbtn}>
+        <Button
+          title="取消"
+          onPress={() => cancelPress(item.station_cd, item.station_name)}
+        />
       </View>
     </View>
   );
@@ -147,6 +204,15 @@ const styles = StyleSheet.create({
   rowId: {
     marginRight: 30,
     fontSize: 16,
+  },
+  onPressbtn: {
+    paddingTop: 8,
+    paddingRight: 4,
+  },
+  cancelbtn: {
+    paddingTop: 8,
+    paddingRight: 4,
+    color: 'red',
   },
 });
 
