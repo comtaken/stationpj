@@ -29,11 +29,19 @@ interface Props {
   }>;
 }
 const FeatureList: React.FC<Props> = ({ sharedState }) => {
-  const testnum = '';
+  // console.log("FileSystem; " + FileSystem.documentDirectory);
   const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
   const [code, setCode] = useState<string>();
   useEffect(() => {
+    /**
+     * テーブル削除
+     */
+    // dropItemsFromDatabase();
+    /**
+     * テーブル存在チェック
+     * なければcreate、insert
+     */
     checkIfDatabaseExists()
       .then((result) => {
         if ('0' == result) {
@@ -44,7 +52,9 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
-
+    /**
+     * 全件取得
+     */
     getItemsFromDatabase()
       .then((items) => {
         setItems(items);
@@ -52,7 +62,9 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
-
+    /**
+     * 件数表示用
+     */
     selectcount()
       .then((result) => {
         setGetAllNum(result);
