@@ -5,6 +5,7 @@ import SearchLineName from '../organisms/SearchLineName';
 
 const PageTemplate = ({}) => {
   const [sharedState, setSharedState] = useState<any>([]);
+  
   const handleChange = (newValue: any) => {
     // console.log(newValue)
     setSharedState(newValue);
@@ -12,7 +13,7 @@ const PageTemplate = ({}) => {
   return (
     <View style={{ width: 340 }}>
       <SearchLineName onChange={handleChange}></SearchLineName>
-      <FeatureList sharedState={sharedState}></FeatureList>
+      <FeatureList sharedState={sharedState} onChange={handleChange}></FeatureList>
     </View>
   );
 };

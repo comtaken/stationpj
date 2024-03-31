@@ -33,7 +33,10 @@ interface Props {
     get_off_flg: number;
   }>;
 }
-const FeatureList: React.FC<Props> = ({ sharedState }) => {
+interface Props {
+  onChange: (newValue: any) => void;
+}
+const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
   // console.log("FileSystem; " + FileSystem.documentDirectory);
   // console.log(sharedState);
   const [getAllNum, setGetAllNum] = useState<string>();
@@ -103,6 +106,19 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
+//TODO:sharedStateから路線名を取得して引数にする。
+//抽出結果をonChangeに渡してStateを更新する。
+//ボタンを押したときに正しく更新されるはず。
+    // chooseToLineName(路線名)
+    //   .then((items) => {
+    //     onChange(items);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching items:', error);
+    //   });
+
+
+
   };
 
   /**
@@ -120,6 +136,13 @@ const FeatureList: React.FC<Props> = ({ sharedState }) => {
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
+
+
+
+
+
+
+
   };
 
   const renderItem = ({
