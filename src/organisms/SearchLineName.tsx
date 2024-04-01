@@ -24,7 +24,6 @@ const SearchLineName: React.FC<Props> = ({ onChange }) => {
           label: getAll,
           value: getAll,
         });
-        // console.log(formattedData[0]);
         setsearchLineNameItems(formattedData);
       })
       .catch((error) => {
@@ -33,13 +32,7 @@ const SearchLineName: React.FC<Props> = ({ onChange }) => {
   }, []);
 
   const handleChange = (value: string) => {
-    chooseToLineName(value)
-      .then((items) => {
-        onChange(items);
-      })
-      .catch((error) => {
-        console.error('Error fetching items:', error);
-      });
+    onChange(value);
   };
 
   return (

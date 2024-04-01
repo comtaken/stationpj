@@ -1,14 +1,8 @@
-import {
-  StyleSheet,
-  View,
-  Text,
-  FlatList,
-  ScrollView,
-  Button,
-} from 'react-native';
+import { StyleSheet, View, Text, FlatList, Button } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   checkIfDatabaseExists,
+  chooseToLineName,
   createItemsFromDatabase,
   dropItemsFromDatabase,
   getItemsFromDatabase,
@@ -19,26 +13,17 @@ import {
 } from './ItemService';
 import * as FileSystem from 'expo-file-system';
 import tw from 'twrnc';
-import { useContext } from 'react';
 import React from 'react';
-import { Colors } from 'react-native/Libraries/NewAppScreen';
 import { Ionicons } from '@expo/vector-icons';
 
 interface Props {
-  sharedState: ArrayLike<{
-    line_cd: number;
-    line_name: string;
-    station_cd: number;
-    station_name: string;
-    get_off_flg: number;
-  }>;
+  sharedState: string | undefined;
 }
 interface Props {
   onChange: (newValue: any) => void;
 }
-const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
+const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
   // console.log("FileSystem; " + FileSystem.documentDirectory);
-  // console.log(sharedState);
   const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
   const [code, setCode] = useState<string>();
@@ -85,10 +70,26 @@ const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
   }, []);
 
   useEffect(() => {
-    if (sharedState.length === 0) {
-      setCode(getAllNum);
-    } else {
-      setCode(sharedState.length.toString());
+    if (sharedState != undefined) {
+      if (sharedState == '全件取得') {
+        getItemsFromDatabase()
+          .then((items) => {
+            setItems(items);
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+        setCode(getAllNum);
+      } else {
+        chooseToLineName(sharedState)
+          .then((items) => {
+            setItems(items);
+            setCode(items.length.toString());
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+      }
     }
   }, [sharedState]);
   /**
@@ -96,29 +97,28 @@ const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
    * @param station_cd
    */
   const getOffPress = (station_cd: number, station_name: string) => {
-    // console.log(station_cd);
     updateGetOffFlg(station_cd, station_name);
-
-    getItemsFromDatabase()
-      .then((items) => {
-        setItems(items);
-      })
-      .catch((error) => {
-        console.error('Error fetching items:', error);
-      });
-//TODO:sharedStateから路線名を取得して引数にする。
-//抽出結果をonChangeに渡してStateを更新する。
-//ボタンを押したときに正しく更新されるはず。
-    // chooseToLineName(路線名)
-    //   .then((items) => {
-    //     onChange(items);
-    //   })
-    //   .catch((error) => {
-    //     console.error('Error fetching items:', error);
-    //   });
-
-
-
+    if (sharedState != undefined) {
+      if (sharedState == '全件取得') {
+        getItemsFromDatabase()
+          .then((items) => {
+            setItems(items);
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+        setCode(getAllNum);
+      } else {
+        chooseToLineName(sharedState)
+          .then((items) => {
+            setItems(items);
+            setCode(items.length.toString());
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+      }
+    }
   };
 
   /**
@@ -126,23 +126,28 @@ const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
    * @param station_cd
    */
   const cancelPress = (station_cd: number, station_name: string) => {
-    // console.log(station_cd);
     updateCancelFlg(station_cd, station_name);
-
-    getItemsFromDatabase()
-      .then((items) => {
-        setItems(items);
-      })
-      .catch((error) => {
-        console.error('Error fetching items:', error);
-      });
-
-
-
-
-
-
-
+    if (sharedState != undefined) {
+      if (sharedState == '全件取得') {
+        getItemsFromDatabase()
+          .then((items) => {
+            setItems(items);
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+        setCode(getAllNum);
+      } else {
+        chooseToLineName(sharedState)
+          .then((items) => {
+            setItems(items);
+            setCode(items.length.toString());
+          })
+          .catch((error) => {
+            console.error('Error fetching items:', error);
+          });
+      }
+    }
   };
 
   const renderItem = ({
@@ -172,9 +177,9 @@ const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
       </View>
       <View>
         {item.get_off_flg == 1 ? (
-          <Ionicons name="checkmark-circle" size={32} color="green" />
+          <Ionicons style={{marginTop:12, marginRight:12}} name="flag" size={32} color="orange" />
         ) : (
-          <Ionicons name="close-circle" size={32} color="red" />
+          <Ionicons style={{marginTop:12, marginRight:12}} name="flag" size={32} color="white" />
         )}
       </View>
       <View style={styles.onPressbtn}>
@@ -194,19 +199,12 @@ const FeatureList: React.FC<Props> = ({ sharedState,onChange }) => {
   return (
     <View style={{ height: 550 }}>
       <Text style={{ fontSize: 22 }}>{code}件</Text>
-      {sharedState.length !== 0 ? (
-        <FlatList
-          data={sharedState}
-          renderItem={renderItem}
-          nestedScrollEnabled={true}
-        />
-      ) : (
-        <FlatList
-          data={items}
-          renderItem={renderItem}
-          nestedScrollEnabled={true}
-        />
-      )}
+
+      <FlatList
+        data={items}
+        renderItem={renderItem}
+        nestedScrollEnabled={true}
+      />
     </View>
   );
 };
@@ -217,7 +215,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 1,
     borderBottomColor: '#dcdcdc',
     marginTop: 3,
-    height: 49,
+    height: 62,
   },
   column: {
     paddingTop: 8,
