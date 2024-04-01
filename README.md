@@ -1,5 +1,6 @@
 
-![image](https://github.com/comtaken/stationpj/assets/65578523/e2c83aac-3d09-42da-a9a0-4b363e2b07ef)
+![image](https://github.com/comtaken/stationpj/assets/65578523/7a6e0d3e-d7f1-4f7c-b27e-2dd283f6abd7)
+
 
 
 
