@@ -112,7 +112,7 @@ const onPressAlert = (station_name: string, messageFlg: number) => {
   // ]);
   if (messageFlg === 1) {
     Alert.alert(station_name, '下車更新しました。', [
-      { text: 'OK', onPress: () => '' },
+      { text: 'OK', onPress: () => ''},
     ]);
   } else {
     Alert.alert(station_name, '取消更新しました。', [

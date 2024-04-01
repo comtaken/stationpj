@@ -5,7 +5,7 @@ import Header from '../organisms/Header';
 const HeaderTemplate = ({}) => {
   return (
     <View>
-      <Header title="STASION-LIST" />
+      <Header title="STATION-LIST" />
     </View>
   );
 };

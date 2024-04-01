@@ -50,13 +50,13 @@ const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
     /**
      * 全件取得
      */
-    getItemsFromDatabase()
-      .then((items) => {
-        setItems(items);
-      })
-      .catch((error) => {
-        console.error('Error fetching items:', error);
-      });
+    // getItemsFromDatabase()
+    //   .then((items) => {
+    //     setItems(items);
+    //   })
+    //   .catch((error) => {
+    //     console.error('Error fetching items:', error);
+    //   });
     /**
      * 件数表示用
      */
