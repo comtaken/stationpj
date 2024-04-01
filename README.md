@@ -1,5 +1,6 @@
 
-![image](https://github.com/comtaken/stationpj/assets/65578523/f841ab2c-44ca-49af-b1f3-0e0a742294ae)
+![image](https://github.com/comtaken/stationpj/assets/65578523/e2c83aac-3d09-42da-a9a0-4b363e2b07ef)
+
 
 
 ### 起動手順  
