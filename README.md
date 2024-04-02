@@ -2,7 +2,10 @@
 ![image](https://github.com/comtaken/stationpj/assets/65578523/7a6e0d3e-d7f1-4f7c-b27e-2dd283f6abd7)
 
 
-
+### 環境  
+node v18.12.0  
+npm 8.19.2  
+react-native 0.73.6
 
 ### 起動手順  
 1. 以下コマンドで起動  
