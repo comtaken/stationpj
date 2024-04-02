@@ -177,22 +177,33 @@ const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
       </View>
       <View>
         {item.get_off_flg == 1 ? (
-          <Ionicons style={{marginTop:12, marginRight:12}} name="flag" size={32} color="orange" />
+          <Ionicons
+            style={{ marginTop: 12, marginRight: 12 }}
+            name="flag"
+            size={32}
+            color="orange"
+          />
         ) : (
-          <Ionicons style={{marginTop:12, marginRight:12}} name="flag" size={32} color="white" />
+          <Ionicons
+            style={{ marginTop: 12, marginRight: 12 }}
+            name="flag"
+            size={32}
+            color="white"
+          />
         )}
       </View>
       <View style={styles.onPressbtn}>
-        <Button
-          title="下車"
-          onPress={() => getOffPress(item.station_cd, item.station_name)}
-        />
-      </View>
-      <View style={styles.cancelbtn}>
-        <Button
-          title="取消"
-          onPress={() => cancelPress(item.station_cd, item.station_name)}
-        />
+        {item.get_off_flg == 1 ? (
+          <Button
+            title="取消"
+            onPress={() => cancelPress(item.station_cd, item.station_name)}
+          />
+        ) : (
+          <Button
+            title="下車"
+            onPress={() => getOffPress(item.station_cd, item.station_name)}
+          />
+        )}
       </View>
     </View>
   );
