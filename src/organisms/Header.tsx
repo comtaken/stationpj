@@ -15,7 +15,7 @@ const Header: React.FC<HeaderProps> = ({ title }) => {
 
 const styles = StyleSheet.create({
   header: {
-    width: '100%',
+    width: 340,
     height: 40,
     backgroundColor: '#b2cbe4',
     alignItems: 'center',

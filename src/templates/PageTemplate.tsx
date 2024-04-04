@@ -3,7 +3,10 @@ import FeatureList from '../organisms/FeatureList';
 import { StyleSheet, Text, View } from 'react-native';
 import SearchLineName from '../organisms/SearchLineName';
 
-const PageTemplate = ({}) => {
+interface Props {
+  navigation: any;
+}
+const PageTemplate: React.FC<Props> = ({navigation}) => {
   const [sharedState, setSharedState] = useState<string>('');
 
   const handleChange = (newValue: any) => {
@@ -14,8 +17,7 @@ const PageTemplate = ({}) => {
       <SearchLineName onChange={handleChange}></SearchLineName>
       <FeatureList
         sharedState={sharedState}
-        onChange={handleChange}
-      ></FeatureList>
+        onChange={handleChange} navigation={navigation}      ></FeatureList>
     </View>
   );
 };

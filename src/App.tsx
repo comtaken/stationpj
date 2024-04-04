@@ -3,15 +3,27 @@ import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import MainPage from './pages/MainPage';
 import Constants from 'expo-constants';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import DetailPage from './pages/DetailPage';
 
 function App() {
+  const Stack = createNativeStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text>
-        <MainPage></MainPage>
-      </Text>
-      <StatusBar style="auto" />
-    </View>
+    
+        <NavigationContainer >
+      <Stack.Navigator>
+        <Stack.Screen name="STATION-LIST" component={MainPage} />
+        <Stack.Screen name="DetailPage" component={DetailPage} />
+      </Stack.Navigator>
+    </NavigationContainer>
+    // <View style={styles.container}>
+    //   <Text>
+    //     <MainPage></MainPage>
+    //   </Text>
+    //   <StatusBar style="auto" />
+    // </View>
   );
 }
 

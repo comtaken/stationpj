@@ -74,7 +74,7 @@ export const updateGetOffFlg = (station_cd: number, station_name: string) => {
           // alert("更新しました。");
           // console.log(result);
           messageFlg = 1;
-          onPressAlert(station_name, messageFlg);
+          // onPressAlert(station_name, messageFlg);
           console.log('update success');
         },
         () => {
@@ -94,7 +94,7 @@ export const updateCancelFlg = (station_cd: number, station_name: string) => {
         [station_cd],
         (_, result) => {
           messageFlg = 0;
-          onPressAlert(station_name, messageFlg);
+          // onPressAlert(station_name, messageFlg);
           console.log('cancel success');
         },
         () => {

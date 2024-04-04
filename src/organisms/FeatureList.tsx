@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, FlatList, Button } from 'react-native';
+import { StyleSheet, View, Text, FlatList, Button, TouchableWithoutFeedback } from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   checkIfDatabaseExists,
@@ -15,6 +15,8 @@ import * as FileSystem from 'expo-file-system';
 import tw from 'twrnc';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
+import { NavigationContainer } from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 interface Props {
   sharedState: string | undefined;
@@ -22,7 +24,10 @@ interface Props {
 interface Props {
   onChange: (newValue: any) => void;
 }
-const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
+interface Props {
+  navigation: any;
+}
+const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
   // console.log("FileSystem; " + FileSystem.documentDirectory);
   const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
@@ -150,6 +155,11 @@ const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
     }
   };
 
+  const datailPress = (station_cd: number, station_name: string) => {
+
+  };
+
+
   const renderItem = ({
     item,
     index,
@@ -163,7 +173,10 @@ const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
     };
     index: number;
   }) => (
-    <View style={styles.rowItem}>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailPage')}>
+    <View style={styles.rowItem} >
+
+
       <View>
         <Text style={styles.rowId}>{index + 1}</Text>
       </View>
@@ -206,6 +219,7 @@ const FeatureList: React.FC<Props> = ({ sharedState, onChange }) => {
         )}
       </View>
     </View>
+    </TouchableWithoutFeedback>
   );
   return (
     <View style={{ height: 550 }}>
