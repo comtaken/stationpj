@@ -11,10 +11,9 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-    
-        <NavigationContainer >
+        <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="STATION-LIST" component={MainPage} />
+        <Stack.Screen name="StationList" component={MainPage} />
         <Stack.Screen name="DetailPage" component={DetailPage} />
       </Stack.Navigator>
     </NavigationContainer>

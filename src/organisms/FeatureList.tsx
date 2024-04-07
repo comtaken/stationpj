@@ -173,7 +173,12 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
     };
     index: number;
   }) => (
-    <TouchableWithoutFeedback onPress={() => navigation.navigate('DetailPage')}>
+    <TouchableWithoutFeedback onPress={() => {
+      navigation.navigate('DetailPage',{
+        message: item.station_name,
+      });
+      }}
+      >
     <View style={styles.rowItem} >
 
 
