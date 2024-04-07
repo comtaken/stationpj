@@ -1,4 +1,12 @@
-import { StyleSheet, View, Text, FlatList, Button, TouchableWithoutFeedback } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Text,
+  FlatList,
+  Button,
+  TouchableWithoutFeedback,
+  TouchableOpacity,
+} from 'react-native';
 import { useEffect, useState } from 'react';
 import {
   checkIfDatabaseExists,
@@ -15,7 +23,11 @@ import * as FileSystem from 'expo-file-system';
 import tw from 'twrnc';
 import React from 'react';
 import { Ionicons } from '@expo/vector-icons';
-import { NavigationContainer } from '@react-navigation/native';
+import {
+  NavigationContainer,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
 interface Props {
@@ -29,15 +41,45 @@ interface Props {
 }
 const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
   // console.log("FileSystem; " + FileSystem.documentDirectory);
+
   const [getAllNum, setGetAllNum] = useState<string>();
   const [items, setItems] = useState<any>([]);
   const [code, setCode] = useState<string>();
 
+  /**
+   * コンポーネントマウント時サイドデータ取得
+   */
+  useFocusEffect(
+    React.useCallback(() => {
+      if (sharedState != undefined) {
+        if (sharedState == '全件取得') {
+          getItemsFromDatabase()
+            .then((items) => {
+              setItems(items);
+            })
+            .catch((error) => {
+              console.error('Error fetching items:', error);
+            });
+          setCode(getAllNum);
+        } else {
+          chooseToLineName(sharedState)
+            .then((items) => {
+              setItems(items);
+              setCode(items.length.toString());
+            })
+            .catch((error) => {
+              console.error('Error fetching items:', error);
+            });
+        }
+      }
+    }, [sharedState]),
+  );
   useEffect(() => {
     /**
      * テーブル削除
      */
     // dropItemsFromDatabase();
+
     /**
      * テーブル存在チェック
      * なければcreate、insert
@@ -52,9 +94,11 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
       .catch((error) => {
         console.error('Error fetching items:', error);
       });
+
     /**
      * 全件取得
      */
+
     // getItemsFromDatabase()
     //   .then((items) => {
     //     setItems(items);
@@ -62,6 +106,7 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
     //   .catch((error) => {
     //     console.error('Error fetching items:', error);
     //   });
+
     /**
      * 件数表示用
      */
@@ -155,11 +200,6 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
     }
   };
 
-  const datailPress = (station_cd: number, station_name: string) => {
-
-  };
-
-
   const renderItem = ({
     item,
     index,
@@ -170,60 +210,65 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
       station_cd: number;
       station_name: string;
       get_off_flg: number;
+      detail_message: string;
     };
     index: number;
   }) => (
-    <TouchableWithoutFeedback onPress={() => {
-      navigation.navigate('DetailPage',{
-        message: item.station_name,
-      });
+    <TouchableWithoutFeedback
+      onPress={() => {
+        navigation.navigate('詳細情報', {
+          station_cd: item.station_cd,
+          message: item.detail_message,
+        });
       }}
-      >
-    <View style={styles.rowItem} >
+    >
+      <View style={styles.rowItem}>
+        <View>
+          <Text style={styles.rowId}>{index + 1}</Text>
+        </View>
 
+        <View style={styles.column}>
+          <Text style={[styles.rowId, { fontSize: 10 }]}>{item.line_name}</Text>
+        </View>
 
-      <View>
-        <Text style={styles.rowId}>{index + 1}</Text>
+        <View style={styles.column}>
+          <Text style={styles.rowId}>{item.station_name}</Text>
+        </View>
+        <View>
+          {item.get_off_flg == 1 ? (
+            <Ionicons
+              style={{ marginTop: 12, marginRight: 12 }}
+              name="flag"
+              size={32}
+              color="orange"
+            />
+          ) : (
+            <Ionicons
+              style={{ marginTop: 12, marginRight: 12 }}
+              name="flag"
+              size={32}
+              color="#f5f5f5"
+            />
+          )}
+        </View>
+        <View style={styles.onPressbtn}>
+          {item.get_off_flg == 1 ? (
+            <TouchableOpacity
+              style={styles.cancelbuttonContainer}
+              onPress={() => cancelPress(item.station_cd, item.station_name)}
+            >
+              <Text style={styles.cancelbuttonText}>取消</Text>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              style={styles.getoffbuttonContainer}
+              onPress={() => getOffPress(item.station_cd, item.station_name)}
+            >
+              <Text style={styles.getoffbuttonText}>下車</Text>
+            </TouchableOpacity>
+          )}
+        </View>
       </View>
-
-      <View style={styles.column}>
-        <Text style={[styles.rowId, { fontSize: 10 }]}>{item.line_name}</Text>
-      </View>
-
-      <View style={styles.column}>
-        <Text style={styles.rowId}>{item.station_name}</Text>
-      </View>
-      <View>
-        {item.get_off_flg == 1 ? (
-          <Ionicons
-            style={{ marginTop: 12, marginRight: 12 }}
-            name="flag"
-            size={32}
-            color="orange"
-          />
-        ) : (
-          <Ionicons
-            style={{ marginTop: 12, marginRight: 12 }}
-            name="flag"
-            size={32}
-            color="white"
-          />
-        )}
-      </View>
-      <View style={styles.onPressbtn}>
-        {item.get_off_flg == 1 ? (
-          <Button
-            title="取消"
-            onPress={() => cancelPress(item.station_cd, item.station_name)}
-          />
-        ) : (
-          <Button
-            title="下車"
-            onPress={() => getOffPress(item.station_cd, item.station_name)}
-          />
-        )}
-      </View>
-    </View>
     </TouchableWithoutFeedback>
   );
   return (
@@ -241,7 +286,7 @@ const FeatureList: React.FC<Props> = ({ sharedState, navigation }) => {
 const styles = StyleSheet.create({
   rowItem: {
     flexDirection: 'row',
-    backgroundColor: '#cde',
+    backgroundColor: '#f0ffff',
     borderBottomWidth: 1,
     borderBottomColor: '#dcdcdc',
     marginTop: 3,
@@ -264,6 +309,30 @@ const styles = StyleSheet.create({
     paddingTop: 8,
     paddingRight: 4,
     color: 'red',
+  },
+  cancelbuttonContainer: {
+    backgroundColor: '#E9546B',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 18,
+  },
+  cancelbuttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 14,
+  },
+  getoffbuttonContainer: {
+    backgroundColor: '#AACF52',
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 18,
+  },
+  getoffbuttonText: {
+    color: '#fff',
+    fontWeight: 'bold',
+    textAlign: 'center',
+    fontSize: 14,
   },
 });
 

@@ -60,15 +60,12 @@ const SearchLineName: React.FC<Props> = ({ onChange }) => {
 };
 const pickerSelectStyles = StyleSheet.create({
   inputAndroid: {
-    fontSize: 16,
-    paddingHorizontal: 10,
     paddingVertical: 8,
-    borderWidth: 0.5,
-    borderColor: '#789',
-    borderRadius: 8,
     color: 'black',
-    paddingRight: 30,
-    backgroundColor: '#eee',
+    paddingRight: 10,
+    backgroundColor: '#AACF52',
+    marginTop: 10,
+    marginBottom: 10,
   },
 });
 

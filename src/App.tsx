@@ -11,10 +11,10 @@ function App() {
   const Stack = createNativeStackNavigator();
 
   return (
-        <NavigationContainer>
+    <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen name="StationList" component={MainPage} />
-        <Stack.Screen name="DetailPage" component={DetailPage} />
+        <Stack.Screen name="駅リスト" component={MainPage} />
+        <Stack.Screen name="詳細情報" component={DetailPage} />
       </Stack.Navigator>
     </NavigationContainer>
     // <View style={styles.container}>

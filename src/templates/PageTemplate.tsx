@@ -6,7 +6,7 @@ import SearchLineName from '../organisms/SearchLineName';
 interface Props {
   navigation: any;
 }
-const PageTemplate: React.FC<Props> = ({navigation}) => {
+const PageTemplate: React.FC<Props> = ({ navigation }) => {
   const [sharedState, setSharedState] = useState<string>('');
 
   const handleChange = (newValue: any) => {
@@ -17,7 +17,9 @@ const PageTemplate: React.FC<Props> = ({navigation}) => {
       <SearchLineName onChange={handleChange}></SearchLineName>
       <FeatureList
         sharedState={sharedState}
-        onChange={handleChange} navigation={navigation}      ></FeatureList>
+        onChange={handleChange}
+        navigation={navigation}
+      ></FeatureList>
     </View>
   );
 };
