@@ -1,5 +1,6 @@
 
-![image](https://github.com/comtaken/stationpj/assets/65578523/7a6e0d3e-d7f1-4f7c-b27e-2dd283f6abd7)
+![image](https://github.com/comtaken/stationpj/assets/65578523/a35e3200-a00e-4f16-9c69-1fbb242b9bc1)
+
 
 
 ### 環境  
