@@ -1,5 +1,6 @@
-<img src="https://github.com/comtaken/stationpj/assets/65578523/a35e3200-a00e-4f16-9c69-1fbb242b9bc1" width="300">
-
+<p align="center">
+    <img src="https://github.com/comtaken/stationpj/assets/65578523/a35e3200-a00e-4f16-9c69-1fbb242b9bc1" width="300">
+</p>
 ### 環境  
 node v18.12.0  
 npm 8.19.2  
